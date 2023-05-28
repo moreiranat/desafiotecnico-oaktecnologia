@@ -3,6 +3,7 @@ package com.oaktecnologia.desafiotecnico.nataly.projetocrud.presentation.control
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.oaktecnologia.desafiotecnico.nataly.projetocrud.business.service.ProductConverterService;
 import com.oaktecnologia.desafiotecnico.nataly.projetocrud.business.service.ProductService;
+import com.oaktecnologia.desafiotecnico.nataly.projetocrud.model.entity.Product;
 import com.oaktecnologia.desafiotecnico.nataly.projetocrud.presentation.dto.ProductDTO;
 
 import jakarta.validation.Valid;
@@ -35,7 +37,16 @@ public class ProductController {
 	@PostMapping
 	public ResponseEntity<String> save(@Valid @RequestBody ProductDTO dto) {
 
-		return null;
+		try {
+            Product entity = productConverterService.dtoToProduct(dto);
+            entity = productService.save(entity);
+            dto = productConverterService.productToDTO(entity);
+
+            return new ResponseEntity(dto, HttpStatus.CREATED); //status 201 Created
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage()); //status 400 Bad Request
+        }
 	}
 
 	@PutMapping("{id}")
