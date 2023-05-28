@@ -17,6 +17,8 @@ import com.oaktecnologia.desafiotecnico.nataly.projetocrud.business.service.Prod
 import com.oaktecnologia.desafiotecnico.nataly.projetocrud.business.service.ProductService;
 import com.oaktecnologia.desafiotecnico.nataly.projetocrud.presentation.dto.ProductDTO;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
@@ -31,13 +33,13 @@ public class ProductController {
 	}
 
 	@PostMapping
-	public ResponseEntity<String> save(@RequestBody ProductDTO dto) {
+	public ResponseEntity<String> save(@Valid @RequestBody ProductDTO dto) {
 
 		return null;
 	}
 
 	@PutMapping("{id}")
-	public ResponseEntity update(@PathVariable("id") Long id, @RequestBody ProductDTO dto) {
+	public ResponseEntity update(@PathVariable("id") Long id, @Valid @RequestBody ProductDTO dto) {
 
 		return null;
 	}
