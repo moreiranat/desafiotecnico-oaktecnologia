@@ -69,7 +69,14 @@ public class ProductController {
 	@DeleteMapping("{id}")
 	public ResponseEntity delete(@PathVariable("id") Long id) {
 		
-		return null;
+		try {
+            service.deleteById(id);
+
+            return new ResponseEntity(HttpStatus.NO_CONTENT); //status 204 -> No Content
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage()); //status 400 -> Bad Request
+        }
 	}
 
 	@GetMapping

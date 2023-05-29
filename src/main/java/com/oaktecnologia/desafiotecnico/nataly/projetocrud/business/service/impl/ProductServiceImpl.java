@@ -29,6 +29,12 @@ public class ProductServiceImpl implements ProductService {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public void deleteById(Long id) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	public Page<Product> find(Product filter, Pageable pageable) {

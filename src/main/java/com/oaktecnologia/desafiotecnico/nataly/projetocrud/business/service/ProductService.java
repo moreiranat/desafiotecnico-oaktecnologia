@@ -17,6 +17,8 @@ public interface ProductService {
     
     public void delete(Long id);
     
+    public void deleteById(Long id); //deleta o Product passando o id dele
+    
     public Page<Product> find(Product filter, Pageable pageable);
     
     public Optional<Product> findById(Long id);
