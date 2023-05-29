@@ -8,4 +8,6 @@ import com.oaktecnologia.desafiotecnico.nataly.projetocrud.model.entity.Product;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
+	public boolean existsByName(String name);
+
 }

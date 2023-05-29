@@ -8,14 +8,33 @@ import org.springframework.stereotype.Service;
 
 import com.oaktecnologia.desafiotecnico.nataly.projetocrud.business.service.ProductService;
 import com.oaktecnologia.desafiotecnico.nataly.projetocrud.model.entity.Product;
+import com.oaktecnologia.desafiotecnico.nataly.projetocrud.model.repository.ProductRepository;
+import com.oaktecnologia.desafiotecnico.nataly.projetocrud.presentation.controller.exceptions.ObjectAlreadyExistsException;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
+	
+	private final ProductRepository repository;
+	
+	public ProductServiceImpl(ProductRepository repository) {
+		this.repository = repository;
+	}
 
 	@Override
+	@Transactional
 	public Product save(Product product) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if(product.getId() != null) {
+			throw new IllegalStateException("Product is already in the database");
+		}
+		
+		if(repository.existsByName(product.getName())) {
+			throw new ObjectAlreadyExistsException("There is already a product with name " + product.getName());
+		}
+		
+		return repository.save(product);
 	}
 
 	@Override
