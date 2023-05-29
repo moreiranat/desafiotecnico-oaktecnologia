@@ -34,6 +34,27 @@ public class Product implements Serializable {
 	@Column(name = "PRODUCT_AVAILABLEFORSALE", nullable = false)
 	private Boolean availableForSale = false;
 
+	public Product() {
+		
+	}
+
+	public Product(Long id, String name, String description, BigDecimal value, Boolean availableForSale) {
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.value = value;
+		this.availableForSale = availableForSale;
+	}
+	
+	public Product(Long id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+	
+	public Product(String name) {
+		this.name = name;
+	}
+
 	public Long getId() {
 		return id;
 	}

@@ -2,6 +2,8 @@ package com.oaktecnologia.desafiotecnico.nataly.projetocrud.presentation.dto;
 
 import java.math.BigDecimal;
 
+import com.oaktecnologia.desafiotecnico.nataly.projetocrud.model.entity.Product;
+
 public class ProductDTO {
 	
 	private Long id;
@@ -13,6 +15,18 @@ public class ProductDTO {
 	private BigDecimal value;
 	
 	private Boolean availableForSale = false;
+	
+	public ProductDTO() {
+		
+	}
+
+	public ProductDTO(Product product) {
+		this.id = product.getId();
+		this.name = product.getName();
+		this.description = product.getDescription();
+		this.value = product.getValue();
+		this.availableForSale = product.getAvailableForSale();
+	}
 
 	public Long getId() {
 		return id;
