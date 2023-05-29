@@ -25,34 +25,45 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/products")
 public class ProductController {
 
-	private final ProductService productService;
+	private final ProductService service;
 
-	private final ProductConverterService productConverterService;
+	private final ProductConverterService converterService;
 
-	public ProductController(ProductService productService, ProductConverterService productConverterService) {
-		this.productService = productService;
-		this.productConverterService = productConverterService;	
+	public ProductController(ProductService service, ProductConverterService converterService) {
+		this.service = service;
+		this.converterService = converterService;	
 	}
 
 	@PostMapping
 	public ResponseEntity<String> save(@Valid @RequestBody ProductDTO dto) {
 
 		try {
-            Product entity = productConverterService.dtoToProduct(dto);
-            entity = productService.save(entity);
-            dto = productConverterService.productToDTO(entity);
+            Product entity = converterService.dtoToProduct(dto);
+            entity = service.save(entity);
+            dto = converterService.productToDTO(entity);
 
-            return new ResponseEntity(dto, HttpStatus.CREATED); //status 201 Created
+            return new ResponseEntity(dto, HttpStatus.CREATED); //status 201 -> Created
 
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage()); //status 400 Bad Request
+            return ResponseEntity.badRequest().body(e.getMessage()); //status 400 -> Bad Request
         }
 	}
 
 	@PutMapping("{id}")
 	public ResponseEntity update(@PathVariable("id") Long id, @Valid @RequestBody ProductDTO dto) {
 
-		return null;
+		try {
+			
+            dto.setId(id);
+            Product entity = converterService.dtoToProduct(dto);
+            entity = service.update(entity);
+            dto = converterService.productToDTO(entity);
+
+            return ResponseEntity.ok(dto); //status 200 -> Ok
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage()); //status 400 -> Bad Request
+        }
 	}
 
 	@DeleteMapping("{id}")
