@@ -1,5 +1,10 @@
 package com.oaktecnologia.desafiotecnico.nataly.projetocrud.presentation.controller;
 
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -12,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oaktecnologia.desafiotecnico.nataly.projetocrud.business.service.ProductConverterService;
@@ -80,14 +86,42 @@ public class ProductController {
 	}
 
 	@GetMapping
-	public ResponseEntity find(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
-			return null;
+	public ResponseEntity find(@PageableDefault(page = 0, size = 10, sort = "id", 
+			direction = Sort.Direction.ASC) Pageable pageable,
+			@RequestParam(value = "id", required = false) Long id,
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "description", required = false) String description,
+            @RequestParam(value = "value", required = false) BigDecimal value,
+            @RequestParam(value = "availableForSale", required = false) Boolean availableForSale
+	) {
+		
+		try {
+            Product filter = new Product();
+            filter.setId(id);
+            filter.setName(name);
+            filter.setDescription(description);
+            filter.setValue(value);
+            filter.setAvailableForSale(availableForSale);
+
+            Page<Product> entities = service.find(filter, pageable);
+            List<ProductDTO> dtos = converterService.productToDTOList(entities.getContent());
+
+            return ResponseEntity.ok(dtos); //status 200 -> Ok
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage()); //status 400 -> Bad Request
+        }
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity findById(@PathVariable("id") Long id) {
 
-		return null;
-	}
+		Optional<Product> customerOptional = service.findById(id);
+
+        if(!customerOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found."); //status 404 -> Not Found
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(customerOptional.get()); //status 200 -> Ok
+    }
 
 }

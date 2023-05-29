@@ -1,9 +1,9 @@
 package com.oaktecnologia.desafiotecnico.nataly.projetocrud.business.service.impl;
 
-import java.awt.print.Pageable;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.oaktecnologia.desafiotecnico.nataly.projetocrud.business.service.ProductService;
