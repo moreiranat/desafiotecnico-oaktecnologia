@@ -3,6 +3,8 @@ package com.oaktecnologia.desafiotecnico.nataly.projetocrud.business.service.imp
 import java.util.Objects;
 import java.util.Optional;
 
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -90,14 +92,19 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Page<Product> find(Product filter, Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Example<Product> example = Example.of(filter,
+                ExampleMatcher.matching()
+                        .withIgnoreCase()
+                        .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING));
+
+        return repository.findAll(example, pageable);
 	}
 
 	@Override
 	public Optional<Product> findById(Long id) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+		
+		return repository.findById(id);
 	}
 	
 	private Optional<Product> findByName(String name) {
