@@ -61,14 +61,30 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public void delete(Long id) {
-		// TODO Auto-generated method stub
+	@Transactional
+	public void delete(Product product) {
+		
+		if(product.getId() == null) {
+            throw new MissingFieldException("id", "delete");
+        } else if(!repository.existsById(product.getId())) {
+            throw new ObjectNotFoundException("product", "id", product.getId());
+        }
+
+        repository.delete(product);
 		
 	}
 	
 	@Override
+	@Transactional
 	public void deleteById(Long id) {
-		// TODO Auto-generated method stub
+		
+		if(id == null) {
+            throw new MissingFieldException("id", "delete");
+        } else if(!repository.existsById(id)) {
+            throw new ObjectNotFoundException("product", "id", id);
+        }
+
+        repository.deleteById(id);
 		
 	}
 

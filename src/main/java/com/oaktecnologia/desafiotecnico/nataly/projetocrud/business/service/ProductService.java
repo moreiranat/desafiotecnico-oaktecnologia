@@ -15,7 +15,7 @@ public interface ProductService {
 	
     public Product update(Product product);
     
-    public void delete(Long id);
+    public void delete(Product product);
     
     public void deleteById(Long id); //deleta o Product passando o id dele
     
