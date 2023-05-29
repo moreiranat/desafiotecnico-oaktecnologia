@@ -116,12 +116,12 @@ public class ProductController {
 	@GetMapping("/{id}")
 	public ResponseEntity findById(@PathVariable("id") Long id) {
 
-		Optional<Product> customerOptional = service.findById(id);
+		Optional<Product> productOptional = service.findById(id);
 
-        if(!customerOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found."); //status 404 -> Not Found
+        if(!productOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found."); //status 404 -> Not Found
         }
-        return ResponseEntity.status(HttpStatus.OK).body(customerOptional.get()); //status 200 -> Ok
+        return ResponseEntity.status(HttpStatus.OK).body(productOptional.get()); //status 200 -> Ok
     }
 
 }
